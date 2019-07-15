@@ -5,13 +5,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  
+        <script src="https://code.jquery.com/jquery-git.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
   <style>
     /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
     .row.content {height: 1500px}
@@ -40,8 +39,8 @@
   </style>
 </head>
 <body>
-<center><button id="demo">Click to Generate PDF</button></center>
-<div class="container-fluid">
+   <button id="pdfview">Download PDF</button>
+<div class="container-fluid" id="demo">
   <div class="row content">
     <div class="col-sm-3 sidenav">
       <h4>John's Blog</h4>
@@ -60,7 +59,6 @@
         </span>
       </div>
     </div>
-
     <div class="col-sm-9">
       <h4><small>RECENT POSTS</small></h4>
       <hr>
@@ -77,7 +75,6 @@
       <h5><span class="label label-success">Lorem</span></h5><br>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
       <hr>
-
       <h4>Leave a Comment:</h4>
       <form role="form">
         <div class="form-group">
@@ -122,22 +119,22 @@
   </div>
 </div>
 
-<footer class="container-fluid">
-  <p>Footer Text</p>
-</footer>
-
-    
 </body>
-
-<script>
-//I did not read up on formatting as in pdf.text(X1, X2,   <------ not sure of how X1 and X2 are used, you can do that
-$('#demo').click(function () {
-  let doc = new jsPDF('p','pt','a4');
-doc.addHTML(document.body,function() {
-    doc.save('demoPDF.pdf');
-});
-
-});    
-</script>
-
+<script type="text/javascript">
+        $(window).on('load', function () {
+            var doc = new jsPDF();
+            var specialElementHandlers = {
+                '#editor': function (element, renderer) {
+                    return true;
+                }
+            };
+            $('#pdfview').click(function () {
+                doc.fromHTML($('#demo').html(), 15, 15, {
+                    'width': 100,
+                    'elementHandlers': specialElementHandlers
+                });
+                doc.save('file.pdf');
+            });
+        });
+    </script>
 </html>
